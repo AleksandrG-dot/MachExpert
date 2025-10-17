@@ -139,3 +139,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Регистрация модели пользователей
 AUTH_USER_MODEL = 'users.Employee'
+
+# Статусы заказов
+ORDER_STATUS = [
+    ('created', 'Создан'),
+    ('at_work', 'В работе'),
+    ('completed', 'Выполнен'),
+    ('annulled', 'Аннулирован'),
+]
+
+# Статусы написанных программ РТК+УП
+PPS_CP_STATUS = [
+    ('not_need', 'Не требуется'),
+    ('check', 'Проверить'),
+    ('make', 'Сделать'),
+    ('done', 'Сделано'),
+]
+
+# Статусы продукции в заказах
+PRODUCTION_STATUS = [
+    ('start', 'Запущен'),
+    ('waiting_billet', 'Ожидает поставки заготовки'),
+    ('at_work', 'В работе'),
+    ('completed', 'Выполнен'),
+    ('annulled', 'Аннулирован'),
+]

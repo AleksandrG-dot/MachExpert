@@ -27,6 +27,8 @@ class Employee(AbstractUser):
         blank=True, help_text="Введите примечание", verbose_name="Примечание"
     )
 
+    REQUIRED_FIELDS = ["position", "service_number"]
+
     def __str__(self):
         return f"{self.username}".strip()
 

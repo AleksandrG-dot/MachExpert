@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Сотрудники предприятия{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>👥 Сотрудники предприятия</h1>
+    <a href="#" class="btn btn-success">+ Добавить сотрудника</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Активные сотрудники</h5>
+    </div>
+    <div class="card-body">
+        {% if employees %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Таб.</th>
+                            <th>Должность</th>
+                            <th>Вн. тел.</th>
+                            <th>Моб. тел.</th>
+                            <th>Дата приема</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</td>
+                            <td>{{ employee.service_number }}</td>
+                            <td>{{ employee.position|default:"-" }}</td>
+                            <td>{{ employee.internal_phone|default:"-" }}</td>
+                            <td>{{ employee.mobile_phone|default:"-" }}</td>
+                            <td>{{ employee.date_employment|date:"d.m.Y"|default:"-" }}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Изменить</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger">Удалить</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+<!--         Хотя это и не возможно, сделаю на всякий случай-->
+            <div class="text-center py-4">
+                <p class="text-muted">Нет данных о сотрудниках</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

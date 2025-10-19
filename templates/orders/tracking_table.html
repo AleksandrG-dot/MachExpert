@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+
+{% block title %}Главная таблица отслеживания{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📊 Главная таблица отслеживания</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if tracking_data %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>№ СЗ</th>
+                            <th>Внутр. номер</th>
+                            <th>Номенклатура</th>
+                            <th>Кол-во</th>
+                            <th>Дата отгрузки</th>
+                            <th>Дата занесения в 1С</th>
+                            <th>РТК+УП</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in tracking_data %}
+                        <tr>
+                            <td>{{ item.order.number_bn }}</td>
+                            <td>
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                    <a href="{% url 'edit_field' pk=item.pk field_name='internal_number' %}">
+                                        {{ item.internal_number|default:"-" }}
+                                    </a>
+                                {% else %}
+                                    {{ item.internal_number|default:"-" }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                    <a href="{% url 'edit_field' pk=item.pk field_name='product' %}">
+                                        {{ item.product }}
+                                    </a>
+                                {% else %}
+                                    {{ item.product }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                    <a href="{% url 'edit_field' pk=item.pk field_name='quantity' %}">
+                                        {{ item.quantity }}
+                                    </a>
+                                {% else %}
+                                    {{ item.quantity }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                    <a href="{% url 'edit_field' pk=item.pk field_name='date_shipment' %}">
+                                        {{ item.date_shipment|date:"d.m.Y" }}
+                                    </a>
+                                {% else %}
+                                    {{ item.date_shipment|date:"d.m.Y" }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user|has_group:'plan_disp_department' or user|has_group:'directors' %}
+                                    <a href="{% url 'edit_field' pk=item.pk field_name='date_entry_1c' %}">
+                                        {{ item.date_entry_1c|date:"d.m.Y"|default:"-" }}
+                                    </a>
+                                {% else %}
+                                    {{ item.date_entry_1c|date:"d.m.Y"|default:"-" }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge
+                                    {% if item.pps_cp == 'not_need' %}bg-secondary
+                                    {% elif item.pps_cp == 'check' %}bg-warning
+                                    {% elif item.pps_cp == 'make' %}bg-info
+                                    {% else %}bg-success{% endif %}">
+                                    {{ item.get_pps_cp_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge
+                                    {% if item.status_product == 'start' %}bg-primary
+                                    {% elif item.status_product == 'waiting_billet' %}bg-warning
+                                    {% elif item.status_product == 'at_work' %}bg-info
+                                    {% elif item.status_product == 'completed' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ item.get_status_product_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <p class="text-muted">Нет данных для отображения</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

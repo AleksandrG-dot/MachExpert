@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Мои заказы</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container mt-4">-->
+<!--        <h1>📋 Мои заказы</h1>-->
+<!--        <p>Здесь будет таблица заказов менеджера {{ user.get_full_name }}</p>-->
+<!--        <div class="alert alert-info">-->
+<!--            Группа: Менеджер по продажам-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+{% block title %}Мои заказы{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📋 Мои заказы</h1>
+    <a href="#" class="btn btn-success">+ Создать заказ</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Заказы в работе</h5>
+    </div>
+    <div class="card-body">
+        {% if orders %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>№ СЗ</th>
+                            <th>Заказчик</th>
+                            <th>Статус</th>
+                            <th>Дата создания</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.number_bn }}</td>
+                            <td>{{ order.customer|default:"-" }}</td>
+                            <td>
+                                <span class="badge
+                                    {% if order.order_status == 'created' %}bg-primary
+                                    {% elif order.order_status == 'at_work' %}bg-warning
+                                    {% elif order.order_status == 'completed' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ order.get_order_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ order.date_created|date:"d.m.Y" }}</td>
+                            <td>
+                                {% if order.order_status == 'created' %}
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Изменить</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Удалить</a>
+                                {% else %}
+                                    <span class="text-muted">Только просмотр</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <p class="text-muted">У вас пока нет заказов</p>
+                <a href="#" class="btn btn-primary">Создать первый заказ</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

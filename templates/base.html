@@ -26,27 +26,30 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">🏭 MachExpert</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{% url 'employees_list' %}">Сотрудники</a>
-                {% if user.is_authenticated %}
-                    {# <span class="navbar-text me-3">Привет, {{ user.get_full_name }}!</span> #}
-                    <span class="user-welcome">Привет, {{ user.username }}!</span>
+            {% if user.is_authenticated %}
+                <div class="navbar-nav ms-5">
+                    <a class="nav-link" href="{% url 'tracking_table' %}">Отслеживание</a>
+                    <a class="nav-link" href="{% url 'manager_orders' %}">Заказы</a>
+                    <a class="nav-link" href="{% url 'employees_list' %}">Справочник предприятия</a>
+                </div>
+                <div class="navbar-nav ms-auto me-3">
+                    <span class="user-welcome mt-2">Привет, {{ user.username }}!</span>
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="nav-link">
                             🚪 Выход
                         </button>
                     </form>
-                {% else %}
-                     <a class="nav-link" href="{% url 'login' %}">🔐 Вход</a>
-                {% endif %}
-            </div>
+                </div>
+            {% else %}
+                {# <a class="nav-link" href="{% url 'login' %}">🔐 Вход</a> #}
+            {% endif %}
         </div>
     </nav>
     <!-- Основной контент -->
-    <main  class="container mt-4">
+    <main class="container-fluid mt-4">
         {% block content %}
         {% endblock %}
     </main>

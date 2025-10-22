@@ -34,24 +34,34 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h2>📊 Отслеживание</h2>
     {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
-        <a href="#" class="btn btn-success">+ Добавить в отслеживание</a>
+        <a href="{% url 'tracking_add' %}" class="btn btn-success">+ Добавить в Отслеживание</a>
     {% endif %}
 </div>
 <div class="card">
     <div class="card-body">
+        {% if new_orders %}
+        <p style="color:red;">
+            Новые заказы ({{ new_orders.count }}):
+            {% for item in new_orders %}
+                {{ item.number_bn }} |
+            {% endfor %}
+        </p>
+        {% endif %}
         {% if tracking_data %}
             <div class="table-responsive">
                 <table class="table table-bordered table-hover" style="text-align: center; vertical-align: middle;">
                     <thead class="table-info" style="text-align: center; vertical-align: middle;">
                         <tr>
-                            <th rowspan="2">№<br>СЗ</th>
+                            <th rowspan="2">№ СЗ</th>
                             <th rowspan="2">Внутр.<br>номер</th>
                             <th rowspan="2">Наименование и номер номенклатуры</th>
                             <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg);">Кол-во</th>
+                            <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg);">Комментарий</th>
                             <th rowspan="2">Дата отгрузки</th>
                             <th colspan="3">КТО</th>
                             <th colspan="4">ПДО</th>
                             <th colspan="1">Сл. снабжения</th>
+                            <th rowspan="2">Cсылки</th>
                         </tr>
                         <tr>
                             <th>Дата <br> занесения <br> в 1С</th>
@@ -100,6 +110,11 @@
                                 onclick="location.href='{% url 'edit_field' pk=item.pk field_name='quantity' %}'"
                                 {% endif %}>
                                 {{ item.quantity }}
+                            </td>
+
+                            {# Коментарий - редактируют и просматривают все #}
+                            <td class=editable-cell" onclick="location.href='{% url 'edit_field' pk=item.pk field_name='comment' %}'">
+                                📃
                             </td>
 
                             {# Дата отгрузки - редактируют технологи и директора #}
@@ -210,6 +225,23 @@
                                     {{ item.date_tentative_supply|date:"d.m.Y"|default:"-" }}
                                 </td>
                             {% endif %}
+                            <td>
+                                <a href="file:///{{ item.order.folder_documentation }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                    📎
+                                </a>
+
+                                <a href="file:///{{ item.order.folder_bn }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                    📁
+                                </a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

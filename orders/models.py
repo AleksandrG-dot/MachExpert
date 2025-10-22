@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 from config.settings import ORDER_STATUS, PPS_CP_STATUS, PRODUCTION_STATUS
 from users.models import Employee
@@ -8,7 +7,7 @@ from users.models import Employee
 class Order(models.Model):
     """Модель “Заказ”"""
 
-    number_bn = models.CharField(max_length=5, unique=True, verbose_name="Номер СЗ")
+    number_bn = models.PositiveIntegerField(verbose_name="Номер СЗ", unique=True)
     responsible = models.ForeignKey(
         Employee,
         on_delete=models.PROTECT,
@@ -23,10 +22,12 @@ class Order(models.Model):
         verbose_name="Сумма заказа",
     )
 
-    folder_bn = models.URLField(
+    folder_bn = models.CharField(
+        max_length=500,
         blank=True,
+        null=True,
         verbose_name="Ссылка на папку с СЗ",
-        help_text=r"Формат: \\server\share\folder или file:///C:/Path/To/Folder/",
+        help_text=r"Формат: \\server\share\folder или C:\Path\To\Folder\ ",
     )
 
     order_status = models.CharField(
@@ -36,11 +37,14 @@ class Order(models.Model):
         verbose_name="Статус заказа",
     )
     date_created = models.DateField(auto_now_add=True, verbose_name="Дата создания")
-    folder_documentation = models.URLField(
+    folder_documentation = models.CharField(
+        max_length=500,
         blank=True,
+        null=True,
         verbose_name="Ссылка на папку с документацией",
-        help_text=r"Формат: \\server\share\folder или file:///C:/Path/To/Folder/",
+        help_text=r"Формат: \\server\share\folder или C:\Path\To\Folder\ ",
     )
+
     date_completion = models.DateField(
         blank=True, null=True, verbose_name="Дата завершения"
     )
@@ -50,13 +54,10 @@ class Order(models.Model):
     def __str__(self):
         return f"Заказ по СЗ №{self.number_bn} от {self.date_created}"
 
-    def get_absolute_url(self):
-        return reverse("order_detail", kwargs={"pk": self.pk})
-
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
-        ordering = ["-date_created"]
+        ordering = ["-number_bn"]
 
 
 class TrackingTable(models.Model):

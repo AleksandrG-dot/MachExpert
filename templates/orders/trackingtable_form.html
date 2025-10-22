@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Добавить в отслеживание{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">
+                Добавить позицию в отслеживание
+            </h4>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row">
+                    <!-- Выбор заказа -->
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.order.id_for_label }}" class="form-label">
+                            <strong>Заказ</strong>
+                        </label>
+                        {{ form.order }}
+                    </div>
+
+                    <!-- Внутренний номер -->
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.internal_number.id_for_label }}" class="form-label">
+                            <strong>Внутренний номер</strong>
+                        </label>
+                        {{ form.internal_number }}
+                    </div>
+                </div>
+
+                <!-- Продукт -->
+                <div class="mb-3">
+                    <label for="{{ form.product.id_for_label }}" class="form-label">
+                        <strong>Наименование и номер номенклатуры</strong>
+                    </label>
+                    {{ form.product }}
+                </div>
+
+                <div class="row">
+                    <!-- Количество -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.quantity.id_for_label }}" class="form-label">
+                            <strong>Количество</strong>
+                        </label>
+                        {{ form.quantity }}
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <!-- Дата отгрузки -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.date_shipment.id_for_label }}" class="form-label">
+                            <strong>Дата отгрузки</strong>
+                        </label>
+                        {{ form.date_shipment }}
+                    </div>
+
+                    <!-- Дата занесения в 1С -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.date_entry_1c.id_for_label }}" class="form-label">
+                            <strong>Дата занесения в 1С</strong>
+                        </label>
+                        {{ form.date_entry_1c }}
+                    </div>
+
+                    <!-- Дата передачи СЗ в ПДО -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.date_transfer_to_pdd.id_for_label }}" class="form-label">
+                            <strong>Дата передачи СЗ в ПДО</strong>
+                        </label>
+                        {{ form.date_transfer_to_pdd }}
+                    </div>
+                </div>
+
+                <!-- РТК+УП -->
+                <div>
+                    <label for="{{ form.pps_cp.id_for_label }}" class="form-label">
+                      <strong>РТК+УП</strong>
+                    </label>
+                    {{ form.pps_cp }}
+                </div>
+
+                <!-- Комментарий -->
+                <div class="mb-4">
+                    <label for="{{ form.comment.id_for_label }}" class="form-label">
+                        <strong>Комментарий</strong>
+                    </label>
+                    {{ form.comment }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'tracking_table' %}" class="btn btn-secondary">
+                        Назад к отслеживанию
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        Добавить в отслеживание
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

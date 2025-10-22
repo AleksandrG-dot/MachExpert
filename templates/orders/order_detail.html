@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load custom_tags %} {# Загружаем кастомные теги #}
+
+{% block extra_css %}
+<style>
+.card {
+    border: none;
+    border-radius: 10px;
+}
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    border: none;
+}
+.table th {
+    font-weight: 600;
+    color: #495057;
+}
+</style>
+{% endblock %}
+
+{% block title %}Детали СЗ №{{ order.number_bn }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Заголовок -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            Детали заказа по СЗ № {{ order.number_bn }}
+        </h1>
+        <div class="btn-group">
+            <a href="{% url 'manager_orders' %}" class="btn btn-secondary">
+                Назад к списку
+            </a>
+            {% if user|has_group:'manager' %}
+            <a href="{% url 'order_edit' order.pk %}" class="btn btn-warning">
+                Редактировать
+            </a>
+            <a href="{% url 'order_delete' order.pk %}" class="btn btn-danger">
+                Удалить
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Карточка с информацией о заказе -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">
+                Основная информация
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="40%">Служебная записка:</th>
+                            <td><strong class="text-dark">СЗ №{{ order.number_bn }} от {{ order.date_created|date:"d.m.Y" }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Ответственный менеджер:</th>
+                            <td>{{ order.responsible }}</td>
+                        </tr>
+                        {% if user|has_group:'manager' or user|has_group:'directors' %}
+                        <tr>
+                            <th>Сумма заказа:</th>
+                            <td> {{ order.amount|default:"—" }} руб. </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>Статус заказа:</th>
+                            <td>
+                                <span class="badge
+                                    {% if order.order_status == 'created' %}bg-success
+                                    {% elif order.order_status == 'in_progress' %}bg-warning
+                                    {% elif order.order_status == 'completed' %}bg-primary
+                                    {% elif order.order_status == 'cancelled' %}bg-danger
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ order.get_order_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Папка с СЗ:</th>
+                            <td>
+                                <a href="file:///{{ order.folder_bn }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                   {{ order.folder_bn|default:"Отсутствует" }}
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Поле с комментариями -->
+    {% if order.comment %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-1">
+                Комментарии
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ order.comment|linebreaks }}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

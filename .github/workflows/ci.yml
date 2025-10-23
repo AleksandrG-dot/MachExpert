@@ -24,7 +24,7 @@ jobs:
 
   # Сборка образа и отправка на Docker Hub проекта machexpert
   build:
-    needs: test
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:

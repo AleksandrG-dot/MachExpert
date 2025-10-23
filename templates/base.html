@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load custom_tags %}  {# Загружаем кастомные теги #}
 {% load static %}
 <html lang="ru">
 <head>
@@ -33,6 +34,9 @@
                     <a class="nav-link" href="{% url 'tracking_table' %}">Отслеживание</a>
                     <a class="nav-link" href="{% url 'manager_orders' %}">Заказы</a>
                     <a class="nav-link" href="{% url 'employees_list' %}">Справочник предприятия</a>
+                    {% if user|has_group:'directors' %}
+                        <a class="nav-link" href="{% url 'managers_report' %}">Отчет по менеджерам</a>
+                    {% endif %}
                 </div>
                 <div class="navbar-nav ms-auto me-3">
                     <span class="user-welcome mt-2">Привет, {{ user.username }}!</span>

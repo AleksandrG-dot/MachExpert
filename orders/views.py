@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Count, Sum
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import OrderForm, TrackingTableFieldForm, TrackingTableForm
 from .models import Order, TrackingTable
@@ -221,3 +224,57 @@ class TrackingTableCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateVie
         order.save()
 
         return response
+
+
+class ManagersReportView(ListView):
+    template_name = "reports/managers_report.html"
+    context_object_name = "managers_data"
+
+    def get_queryset(self):
+        # Получаем даты из GET-параметров
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
+
+        # Если даты не указаны, возвращаем пустой queryset
+        if not start_date or not end_date:
+            return []
+
+        # Преобразуем строки в datetime для фильтрации
+        start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        # Получаем данные по менеджерам
+        queryset = (
+            Order.objects.filter(date_created__range=[start_date, end_date])
+            .exclude(order_status="created")
+            .values(
+                "responsible__username",
+                "responsible__first_name",
+                "responsible__last_name",
+            )
+            .annotate(total_orders=Count("id"), total_amount=Sum("amount"))
+            .order_by("-total_amount")
+        )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем даты в контекст для отображения в форме
+        context["start_date"] = self.request.GET.get("start_date", "")
+        context["end_date"] = self.request.GET.get("end_date", "")
+
+        # Рассчитываем общие суммы
+        managers_data = context["managers_data"]
+        context["total_managers"] = len(managers_data)
+        context["total_orders"] = sum(item["total_orders"] for item in managers_data)
+        context["total_amount"] = sum(
+            item["total_amount"] or 0 for item in managers_data
+        )
+        context["avg_amount"] = (
+            context["total_amount"] / context["total_orders"]
+            if context["total_orders"] > 0
+            else 0
+        )
+
+        return context

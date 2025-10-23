@@ -1,0 +1,250 @@
+[
+  {
+    "model": "orders.order",
+    "pk": 1,
+    "fields": {
+      "number_bn": 1,
+      "responsible": 5,
+      "amount": "12000.00",
+      "folder_bn": "D:\\MachExpert\\Служебные записки\\СЗ №1 от 18.10.2025",
+      "order_status": "completed",
+      "date_created": "2025-10-18",
+      "folder_documentation": "D:\\MachExpert\\Documents\\1",
+      "date_completion": "2025-10-21",
+      "customer": "ООО Абрамов",
+      "comment": "примечание к заказу 1"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 2,
+    "fields": {
+      "number_bn": 2,
+      "responsible": 5,
+      "amount": "20000.00",
+      "folder_bn": "D:\\MachExpert\\Служебные записки\\СЗ №2",
+      "order_status": "at_work",
+      "date_created": "2025-10-18",
+      "folder_documentation": "D:\\MachExpert\\Documents\\2",
+      "date_completion": null,
+      "customer": "ООО Двутавр",
+      "comment": "Примечание к заказу 2"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 3,
+    "fields": {
+      "number_bn": 3,
+      "responsible": 5,
+      "amount": "150000.00",
+      "folder_bn": "D:\\MachExpert\\Служебные записки\\СЗ №3",
+      "order_status": "created",
+      "date_created": "2025-10-20",
+      "folder_documentation": "D:\\MachExpert\\Documents\\2",
+      "date_completion": null,
+      "customer": "ЗАО СельскПроом",
+      "comment": "Упаковать в деревянную тару по месту. Изготовить как можно быстрее. Срок изготовления - это крайний срок отгрузки."
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 4,
+    "fields": {
+      "number_bn": 4,
+      "responsible": 8,
+      "amount": "50000.00",
+      "folder_bn": "D:\\MachExpert\\Служебные записки\\СЗ №4",
+      "order_status": "at_work",
+      "date_created": "2025-10-21",
+      "folder_documentation": "D:\\MachExpert\\Documents\\4",
+      "date_completion": null,
+      "customer": "ООО Абрамов",
+      "comment": "Примечание 4"
+    }
+  },
+  {
+    "model": "orders.order",
+    "pk": 5,
+    "fields": {
+      "number_bn": 5,
+      "responsible": 5,
+      "amount": "500000.00",
+      "folder_bn": "D:\\MachExpert\\Служебные записки\\СЗ №5",
+      "order_status": "completed",
+      "date_created": "2025-10-22",
+      "folder_documentation": "D:\\MachExpert\\Documents\\5",
+      "date_completion": "2025-10-23",
+      "customer": "Тульский завод",
+      "comment": "Без упаковки. Заказчик заберет сам. Предупредить о готовности продукции ответственного менеджера заказчика по телефону 8 (915) 365 78 23"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 1,
+    "fields": {
+      "order": 1,
+      "internal_number": "001",
+      "product": "кольцо ф120",
+      "quantity": 5,
+      "date_shipment": "2025-10-31",
+      "date_entry_1c": "2025-10-31",
+      "date_transfer_to_pdd": "2025-10-24",
+      "pps_cp": "not_need",
+      "order_number_1c": "123",
+      "date_transfer_to_ss": "2025-10-18",
+      "date_warehouse": "2025-10-18",
+      "date_tentative_supply": "2025-10-18",
+      "status_product": "completed",
+      "date_completion": "2025-10-21",
+      "comment": "Примечание 1"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 2,
+    "fields": {
+      "order": 1,
+      "internal_number": "002",
+      "product": "кольцо ф180",
+      "quantity": 2,
+      "date_shipment": "2025-10-31",
+      "date_entry_1c": "2025-10-18",
+      "date_transfer_to_pdd": "2025-10-18",
+      "pps_cp": "not_need",
+      "order_number_1c": null,
+      "date_transfer_to_ss": "2025-10-18",
+      "date_warehouse": "2025-10-18",
+      "date_tentative_supply": "2025-10-18",
+      "status_product": "annulled",
+      "date_completion": null,
+      "comment": "Примечание 2"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 3,
+    "fields": {
+      "order": 2,
+      "internal_number": "003",
+      "product": "кольцо ф200",
+      "quantity": 1,
+      "date_shipment": "2025-11-22",
+      "date_entry_1c": "2025-10-19",
+      "date_transfer_to_pdd": "2025-10-19",
+      "pps_cp": "done",
+      "order_number_1c": "123",
+      "date_transfer_to_ss": "2025-10-25",
+      "date_warehouse": null,
+      "date_tentative_supply": "2025-12-31",
+      "status_product": "at_work",
+      "date_completion": null,
+      "comment": "Примечание 3"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 4,
+    "fields": {
+      "order": 2,
+      "internal_number": "004",
+      "product": "кольцо ф250",
+      "quantity": 150,
+      "date_shipment": "2025-12-28",
+      "date_entry_1c": null,
+      "date_transfer_to_pdd": null,
+      "pps_cp": "check",
+      "order_number_1c": "565",
+      "date_transfer_to_ss": null,
+      "date_warehouse": null,
+      "date_tentative_supply": null,
+      "status_product": "waiting_billet",
+      "date_completion": null,
+      "comment": "Примечание 4"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 5,
+    "fields": {
+      "order": 2,
+      "internal_number": "005",
+      "product": "кольцо ф280",
+      "quantity": 1,
+      "date_shipment": null,
+      "date_entry_1c": null,
+      "date_transfer_to_pdd": null,
+      "pps_cp": "make",
+      "order_number_1c": null,
+      "date_transfer_to_ss": "2025-10-23",
+      "date_warehouse": null,
+      "date_tentative_supply": null,
+      "status_product": "start",
+      "date_completion": null,
+      "comment": "Примечание 5"
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 6,
+    "fields": {
+      "order": 5,
+      "internal_number": null,
+      "product": "Валик центрирующий",
+      "quantity": 5,
+      "date_shipment": "2025-11-25",
+      "date_entry_1c": "2025-10-23",
+      "date_transfer_to_pdd": "2025-10-23",
+      "pps_cp": "not_need",
+      "order_number_1c": null,
+      "date_transfer_to_ss": "2025-10-20",
+      "date_warehouse": "2025-10-20",
+      "date_tentative_supply": "2025-10-24",
+      "status_product": "completed",
+      "date_completion": null,
+      "comment": ""
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 7,
+    "fields": {
+      "order": 5,
+      "internal_number": "склад",
+      "product": "ТО-205.01.01 Приспособление для сборки кожухов",
+      "quantity": 1,
+      "date_shipment": "2025-11-25",
+      "date_entry_1c": "2025-10-23",
+      "date_transfer_to_pdd": "2025-10-23",
+      "pps_cp": "make",
+      "order_number_1c": null,
+      "date_transfer_to_ss": null,
+      "date_warehouse": null,
+      "date_tentative_supply": "2025-10-24",
+      "status_product": "completed",
+      "date_completion": null,
+      "comment": "Приспособление передать на сварочный участок."
+    }
+  },
+  {
+    "model": "orders.trackingtable",
+    "pk": 8,
+    "fields": {
+      "order": 4,
+      "internal_number": null,
+      "product": "ТО-215.00 Кондуктор для сверления",
+      "quantity": 1,
+      "date_shipment": "2025-10-31",
+      "date_entry_1c": "2025-10-23",
+      "date_transfer_to_pdd": "2025-10-23",
+      "pps_cp": "make",
+      "order_number_1c": null,
+      "date_transfer_to_ss": null,
+      "date_warehouse": null,
+      "date_tentative_supply": null,
+      "status_product": "start",
+      "date_completion": null,
+      "comment": ""
+    }
+  }
+]

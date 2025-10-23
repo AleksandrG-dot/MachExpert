@@ -1,16 +1,8 @@
 from django.urls import path
 
-from .views import (
-    FieldUpdateView,
-    ManagersReportView,
-    OrderCreateView,
-    OrderDeleteView,
-    OrderDetailView,
-    OrderUpdateView,
-    TrackingTableCreateView,
-    manager_orders,
-    tracking_table,
-)
+from .views import (FieldUpdateView, ManagersReportView, OrderCreateView,
+                    OrderDeleteView, OrderDetailView, OrderUpdateView,
+                    TrackingTableCreateView, manager_orders, tracking_table)
 
 urlpatterns = [
     path("manager/", manager_orders, name="manager_orders"),

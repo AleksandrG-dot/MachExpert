@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+htmlcov/
+cover/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+htmlcov_DZ32.1/
+
+# PyCharm
+.idea/
+
+# Other
+.git
+.gitignore
+test_db.sqlite3

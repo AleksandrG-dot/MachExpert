@@ -50,11 +50,11 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], ### Указываем папку templates в корне
+        'DIRS': [BASE_DIR / 'templates'],  # Указываем папку templates в корне
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',   ###
+                'django.template.context_processors.debug',   #
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -157,7 +157,7 @@ PPS_CP_STATUS = [
 # Статусы продукции в заказах
 PRODUCTION_STATUS = [
     ('start', 'Запущен'),
-    ('waiting_billet', 'Ожид.Пост.Загот.'), # Ожидает поставки заготовки
+    ('waiting_billet', 'Ожид.Пост.Загот.'),  # Ожидает поставки заготовки
     ('at_work', 'В работе'),
     ('completed', 'Выполнен'),
     ('annulled', 'Аннулирован'),

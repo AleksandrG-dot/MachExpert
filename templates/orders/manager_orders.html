@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load custom_tags %}  {# Загружаем кастомные теги #}
+
+{% block title %}Мои заказы{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    {% if user|has_group:'manager' %}
+        <h1>📋 Мои заказы</h1>
+        <a href="{% url 'order_create' %}" class="btn btn-success">+ Создать заказ</a>
+    {% else %}
+        <h1>📋 Список заказов</h1>
+    {% endif %}
+</div>
+
+<div class="card center">
+    <div class="card-header">
+        <h5 class="mb-0">Список моих заказов</h5>
+    </div>
+    <div class="card-body">
+        {% if orders %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>№ СЗ</th>
+
+                            <th>Заказчик</th>
+
+                            {% if user|has_group:'manager' or user|has_group:'directors' %}
+                                <th>Сумма</th>
+                            {% endif %}
+
+                            <th>Дата создания</th>
+
+                            <th>Дата завершения</th>
+
+                            {% if not user|has_group:'manager' %}
+                                <th>Ответственный</th>
+                            {% endif %}
+
+                            <th>Примечание</th>
+
+                            <th>СЗ</th>
+
+                            {% if user|has_group:'manager' %}
+                            <th>Действия</th>
+                            {% else %}
+                            <th>Статус</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td style="text-align: center;">
+                                <a href="{% url 'order_detail' order.pk %}" style="color: blue; font-weight: bold; text-decoration: none">
+                                {{ order.number_bn }}
+                                </a>
+                            </td>
+
+                            <td>{{ order.customer|default:"-" }}</td>
+
+                            {% if user|has_group:'manager' or user|has_group:'directors' %}
+                                <td>{{ order.amount|default:"-" }}</td>
+                            {% endif %}
+
+                            <td style="text-align: center;">{{ order.date_created|date:"d.m.Y" }}</td>
+
+                            <td style="text-align: center;">{{ order.date_completion|date:"d.m.Y"|default:"-" }}</td>
+
+                            {% if not user|has_group:'manager' %}
+                                <td style="text-align: center;">{{ order.responsible }}</td>
+                            {% endif %}
+
+                            <td>{{ order.comment|truncatechars:40 }}</td>
+
+                            <td>
+                                <a href="file:///{{ order.folder_bn }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                    📁
+                                </a>
+                            </td>
+
+                            <td>
+                                {% if user|has_group:'manager' and order.order_status == 'created' %}
+                                    <a href="{% url 'order_edit' order.pk %}" class="btn btn-sm btn-outline-primary">Изменить</a>
+                                    <a href="{% url 'order_delete' order.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                                {% else %}
+                                <span class="badge
+                                    {% if order.order_status == 'created' %}bg-danger
+                                    {% elif order.order_status == 'at_work' %}bg-primary
+                                    {% elif order.order_status == 'completed' %}bg-success
+                                    {% elif order.order_status == 'annulled' %}bg-warning
+                                    {% else %}bg-dark{% endif %}">
+                                    {{ order.get_order_status_display }}    {% if user|has_group:'manager' %}{% endif %}
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <p class="text-muted">У вас пока нет заказов</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

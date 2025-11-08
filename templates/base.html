@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load custom_tags %}  {# Загружаем кастомные теги #}
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MachExpert - ERP система{% endblock %}</title>
+    {% block extra_css %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css\bootstrap.min.css' %}">
+    <style>
+        .navbar-brand { font-weight: bold; }
+        .user-welcome { color: #ffa; margin-right: 20px; }
+        .nav-link {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: yellow;
+        }
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        body {
+            padding-bottom: 100px; /* Высота подвала + небольшой запас */
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">🏭 MachExpert</a>
+            {% if user.is_authenticated %}
+                <div class="navbar-nav ms-5">
+                    <a class="nav-link" href="{% url 'tracking_table' %}">Отслеживание</a>
+                    <a class="nav-link" href="{% url 'manager_orders' %}">Заказы</a>
+                    {% if user|has_group:'directors' %}
+                        <a class="nav-link" href="{% url 'managers_report' %}">Отчет по менеджерам</a>
+                    {% endif %}
+                    <a class="nav-link" href="{% url 'employees_list' %}">Справочник предприятия</a>
+                </div>
+                <div class="navbar-nav ms-auto me-3">
+                    <span class="user-welcome mt-2">Привет, {{ user.username }}!</span>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link">
+                            🚪 Выход
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                {# <a class="nav-link" href="{% url 'login' %}">🔐 Вход</a> #}
+            {% endif %}
+        </div>
+    </nav>
+    <!-- Основной контент -->
+    <main class="container-fluid mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Подвал -->
+    <footer class="fixed-footer mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <small class="text-muted">ERP система машиностроительного предприятия</small>
+        </div>
+    </footer>
+</body>
+</html>

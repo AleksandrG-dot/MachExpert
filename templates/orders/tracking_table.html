@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% load custom_tags %}  {# Загружаем кастомные теги #}
+
+{% block title %}Главная таблица отслеживания{% endblock %}
+{% block extra_css %}
+<style>
+    {# Стили для статусов производства #}
+    .status-completed { background-color: #00FF00 !important; }
+    .status-annulled { background-color: #FFFF00 !important; }
+
+    .status-waiting_billet { background-color: #FFFF00 !important; }
+    .status-at_work { background-color: #00FF00 !important; }
+
+    .status-start { background-color: #e3f2fd !important; }
+
+    {# Стилили для  РТК+УП #}
+    {# Использовать так: class="pps-{{ item.pps_cp }} #}
+    {# Пока отключил, больше нравится выделение ссылки вокруг (настройки в <td>). #}
+    .pps-not_need { background-color: #f5f5f5 !important; }
+    .pps-check { background-color: #fff3e0 !important; }
+    .pps-make { background-color: #e3f2fd !important; }
+    .pps-done { background-color: #e8f5e8 !important; }
+
+    {# Стили для кликабельных ячеек #}
+    .editable-cell:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2>📊 Отслеживание</h2>
+    {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+        <a href="{% url 'tracking_add' %}" class="btn btn-success">+ Добавить в Отслеживание</a>
+    {% endif %}
+</div>
+<div class="card">
+    <div class="card-body">
+        {% if new_orders %}
+        <p style="color:red;">
+            Новые заказы ({{ new_orders.count }}):
+            {% for item in new_orders %}
+                {{ item.number_bn }} |
+            {% endfor %}
+        </p>
+        {% endif %}
+        {% if tracking_data %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" style="text-align: center; vertical-align: middle;">
+                    <thead class="table-info" style="text-align: center; vertical-align: middle;">
+                        <tr>
+                            <th rowspan="2">№</th>
+                            <th rowspan="2">Код<br>прим.</th>
+                            <th rowspan="2">Наименование</th>
+                            <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg);">Кол-во</th>
+                            <th rowspan="2" style="writing-mode: vertical-lr; transform: rotate(180deg);">Комментарий</th>
+                            <th rowspan="2">Дата отгрузки</th>
+                            <th colspan="3">КТО</th>
+                            <th colspan="4">ПДО</th>
+                            <th colspan="1">Сл. снабжения</th>
+                            <th rowspan="2">Cсылки</th>
+                        </tr>
+                        <tr>
+                            <th>Дата <br> занесения <br> в учет</th>
+                            <th>Дата <br> передачи <br> в ПДО</th>
+                            <th>УП</th>
+                            <th>Номер для<br>учета</th>
+                            <th>Дата<br>заказа<br>материалов</th>
+                            <th>Дата<br>поступления<br>на склад<br>загот./мет.</th>
+                            <th>Статус<br>заказа</th>
+                            <th>Предварит.<br>срок<br>поставки<br>загот./мет.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in tracking_data %}
+                        <tr>
+                            {# № СЗ #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='order' %}'"
+                                {% endif %}>
+                                {{ item.order.number_bn }}
+                            </td>
+
+                            {# Внутренний номер - редактируют технологи и директора #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='internal_number' %}'"
+                                {% endif %}>
+                                {{ item.internal_number|default:"-" }}
+                            </td>
+
+                            {# Номенклатура - редактируют технологи и директора + цветовая маркировка #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}
+                                      {% if item.status_product == 'completed' %}status-completed
+                                      {% elif item.status_product == 'annulled' %}status-annulled
+                                      {% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='product' %}'"
+                                {% endif %}>
+                                {{ item.product }}
+                            </td>
+
+                            {# Количество - редактируют технологи и директора #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='quantity' %}'"
+                                {% endif %}>
+                                {{ item.quantity }}
+                            </td>
+
+                            {# Коментарий - редактируют и просматривают все #}
+                            <td class=editable-cell" onclick="location.href='{% url 'edit_field' pk=item.pk field_name='comment' %}'">
+                                📃
+                            </td>
+
+                            {# Дата отгрузки - редактируют технологи и директора #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_shipment' %}'"
+                                {% endif %}>
+                                {{ item.date_shipment|date:"d.m.Y"|default:"-" }}
+                            </td>
+
+                            {# Дата занесения в 1С #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_entry_1c' %}'"
+                                {% endif %}>
+                            {{ item.date_entry_1c|date:"d.m.Y"|default:"-" }}
+                            </td>
+
+                            {# Дата передачи СЗ в ПДО#}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_transfer_to_pdd' %}'"
+                                {% endif %}>
+                            {{ item.date_transfer_to_pdd|date:"d.m.Y"|default:"-" }}
+                            </td>
+
+                            {# КТО - РТК+УП #}
+                            <td class="{% if user|has_group:'process_engineer' or user|has_group:'directors' %}editable-cell{% endif %}"
+                                {% if user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='pps_cp' %}'"
+                                {% endif %}>
+
+                                <span class="badge
+                                    {% if item.pps_cp == 'not_need' %}display: none
+                                    {% elif item.pps_cp == 'check' %}bg-warning
+                                    {% elif item.pps_cp == 'make' %}bg-info
+                                    {% elif item.pps_cp == 'done' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ item.get_pps_cp_display }}
+                                </span>
+                            </td>
+
+                            {# ПДО - редактирование только ПДО или директора #}
+                            {% if user|has_group:'plan_disp_department' or user|has_group:'directors' %}
+
+                                {# ПДО: номер заказа в 1С #}
+                                <td class="editable-cell"
+                                    onclick="location.href='{% url 'edit_field' pk=item.pk field_name='order_number_1c' %}'">
+                                    {{ item.order_number_1c|default:"-" }}
+                                </td>
+
+                                {# ПДО: Дата передачи СЗ в Службу снабжения #}
+                                <td class="editable-cell"
+                                    onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_transfer_to_ss' %}'">
+                                    {{ item.date_transfer_to_ss|date:"d.m.Y"|default:"-" }}
+                                </td>
+
+                                {# ПДО: Дата поступления на склад загот., металла #}
+                                <td class="editable-cell
+                                   {% if item.status_product == 'completed' %}status-completed
+                                   {% elif item.status_product == 'at_work' %}status-at_work
+                                   {% elif item.status_product == 'waiting_billet' %}status-waiting_billet
+                                   {% endif %}"
+                                    onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_warehouse' %}'">
+                                    {{ item.date_warehouse|date:"d.m.Y"|default:"-" }}
+                                </td>
+                            {% else %}
+                                <td>{{ item.order_number_1c|default:"-" }}</td>
+                                <td>{{ item.date_transfer_to_ss|date:"d.m.Y"|default:"-" }}</td>
+                                <td class="
+                                   {% if item.status_product == 'completed' %}status-completed
+                                   {% elif item.status_product == 'at_work' %}status-at_work
+                                   {% elif item.status_product == 'waiting_billet' %}status-waiting_billet
+                                   {% endif %}">
+                                    {{ item.date_warehouse|date:"d.m.Y"|default:"-" }}
+                                </td>
+                            {% endif %}
+
+                            {# Статус продукции #}
+                            <td class="{% if user|has_group:'plan_disp_department' or user|has_group:'process_engineer' or user|has_group:'directors' %}
+                            editable-cell
+                            {% endif %}"
+                                {% if user|has_group:'plan_disp_department' or user|has_group:'process_engineer' or user|has_group:'directors' %}
+                                onclick="location.href='{% url 'edit_field' pk=item.pk field_name='status_product' %}'"
+                                {% endif %}>
+                                {{ item.get_status_product_display }}
+                            </td>
+
+
+                            {# Служба снабжения - редактирование только снабжение или директора #}
+                            {% if user|has_group:'supply_service' or user|has_group:'directors' %}
+
+                                {# Служба снабжения - предварительные сроки поставки #}
+                                <td class="editable-cell
+                                   {% if item.status_product == 'completed' %}status-completed
+                                   {% elif item.status_product == 'at_work' %}status-at_work
+                                   {% elif item.status_product == 'waiting_billet' %}status-waiting_billet
+                                   {% endif %}"
+                                    onclick="location.href='{% url 'edit_field' pk=item.pk field_name='date_tentative_supply' %}'">
+                                    {{ item.date_tentative_supply|date:"d.m.Y"|default:"-" }}
+                                </td>
+                            {% else %}
+                                <td class="
+                                   {% if item.status_product == 'completed' %}status-completed
+                                   {% elif item.status_product == 'at_work' %}status-at_work
+                                   {% elif item.status_product == 'waiting_billet' %}status-waiting_billet
+                                   {% endif %}">
+                                    {{ item.date_tentative_supply|date:"d.m.Y"|default:"-" }}
+                                </td>
+                            {% endif %}
+                            <td>
+                                <a href="file:///{{ item.order.folder_documentation }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                    📎
+                                </a>
+
+                                <a href="file:///{{ item.order.folder_bn }}"
+                                   target="_blank"
+                                   class="folder-link"
+                                   style="text-decoration: none"
+                                   title="Открыть папку">
+                                    📁
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <p class="text-muted">Нет данных для отображения</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

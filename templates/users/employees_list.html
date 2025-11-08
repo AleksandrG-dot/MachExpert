@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load custom_tags %}  {# Загружаем кастомные теги #}
+
+{% block title %}Сотрудники предприятия{% endblock %}
+
+{% block content %}
+
+{% if not perms.users.change_employee %}
+<div class="container">
+{% endif %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>👥 Сотрудники предприятия</h1>
+        {% if perms.users.add_employee %}
+            <a href="{% url 'employee_create' %}" class="btn btn-success">+ Добавить сотрудника</a>
+        {% endif %}
+    </div>
+
+    <div class="card center">
+        <div class="card-header">
+            <h5 class="mb-0">Сотрудники</h5>
+        </div>
+        <div class="card-body">
+            {% if employees %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ФИО</th>
+                                {% if perms.users.change_employee %}
+                                    <th>Таб.</th>
+                                {% endif %}
+                                <th>Должность</th>
+                                <th>Вн. тел.</th>
+                                <th>Моб. тел.</th>
+                                <th>e-mail</th>
+                                {% if perms.users.change_employee %}
+                                    <th>Дата рождения</th>
+                                    <th>Дата приема</th>
+                                    <th>Дата увольн.</th>
+                                    <th>Группа</th>
+                                    <th>Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</td>
+                                {% if perms.users.change_employee %}
+                                    <td>{{ employee.service_number }}</td>
+                                {% endif %}
+                                <td>{{ employee.position|default:"-" }}</td>
+                                <td>{{ employee.internal_phone|default:"-" }}</td>
+                                <td>{{ employee.mobile_phone|default:"-" }}</td>
+                                <td>
+                                    {% if employee.email %}
+                                        <a href="mailto:{{ employee.email }}">
+                                            {{ employee.email }}
+                                        </a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                {% if perms.users.change_employee %}
+                                    <td>{{ employee.birthday|date:"d.m.Y"|default:"-" }}</td>
+                                    <td>{{ employee.date_employment|date:"d.m.Y"|default:"-" }}</td>
+                                    <td>{{ employee.date_dismissal|date:"d.m.Y"|default:"-" }}</td>
+                                    <td>
+                                        {% for group in employee.groups.all %}
+                                            <span class="badge bg-secondary">{{ group.name|group_convert }}</span>
+                                        {% empty %}
+                                            <span class="text-muted">нет групп</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'employee_edit' employee.pk %}" class="btn btn-sm btn-outline-primary">Изменить</a>
+                                        {% if perms.users.delete_employee %}
+                                            <a href="{% url 'employee_delete' employee.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+            {# Хотя это и не возможно, сделаю на всякий случай #}
+                <div class="text-center py-4">
+                    <p class="text-muted">Нет данных о сотрудниках</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% if not perms.users.change_employee %}
+</div>
+{% endif %}
+{% endblock %}

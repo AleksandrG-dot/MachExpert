@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Отчет по работе менеджеров - ERM MachExpert{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h3 mb-4">
+        Отчет по работе менеджеров
+    </h1>
+
+    <!-- Форма выбора дат -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">Параметры отчета</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row">
+                <div class="col-md-2">
+                    <label for="start_date" class="form-label">С даты</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" 
+                           value="{{ start_date }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="end_date" class="form-label">До даты</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date"
+                           value="{{ end_date }}" required>
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            Показать
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Результаты -->
+    {% if managers_data %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="card-title mb-1">Результаты</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Менеджер</th>
+                            <th class="text-center">Количество заказов</th>
+                            <th class="text-end">Общая сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for manager in managers_data %}
+                        <tr>
+                            <td>
+                                {{ manager.responsible__last_name }} {{ manager.responsible__first_name }}
+                            </td>
+                            <td class="text-center">
+                                <span>{{ manager.total_orders }}</span>
+                            </td>
+                            <td class="text-end fw-bold text-success">
+                                {{ manager.total_amount|default:0 }} руб.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-group-divider">
+                            <td class="fw-bold">Итого:</td>
+                            <td class="text-center fw-bold">{{ total_orders }}</td>
+                            <td class="text-end fw-bold text-success">{{ total_amount }} руб.</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Общая статистика -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Менеджеров</h6>
+                    <h4 class="mb-0">{{ total_managers }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Заказов</h6>
+                    <h4 class="mb-0">{{ total_orders }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Общая сумма</h6>
+                    <h4 class="mb-0">{{ total_amount|floatformat:0 }} руб.</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Средний чек</h6>
+                    <h4 class="mb-0">{{ avg_amount|floatformat:0 }} руб.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif start_date and end_date %}
+    <div class="alert alert-info text-center">
+        Нет данных за выбранный период
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

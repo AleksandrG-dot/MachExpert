@@ -1,0 +1,261 @@
+[
+  {
+    "model": "users.employee",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T13:40:02.505Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@machexpert.ru",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-10-17T19:08:40Z",
+      "patronymic": "",
+      "service_number": "1",
+      "internal_phone": null,
+      "mobile_phone": null,
+      "position": "Администратор сайта",
+      "birthday": null,
+      "date_employment": null,
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T10:37:41.640Z",
+      "is_superuser": false,
+      "username": "ДиректорА.А.",
+      "first_name": "Андрей",
+      "last_name": "Директор",
+      "email": "director@machexpert.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T05:55:02Z",
+      "patronymic": "Александрович",
+      "service_number": "2",
+      "internal_phone": "111",
+      "mobile_phone": "+79127565037",
+      "position": "Коммерческий директор",
+      "birthday": null,
+      "date_employment": null,
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T11:05:57Z",
+      "is_superuser": false,
+      "username": "ТехнологА.А.",
+      "first_name": "Аркадий",
+      "last_name": "Технолог",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T05:58:49Z",
+      "patronymic": "Артурович",
+      "service_number": "4",
+      "internal_phone": "050",
+      "mobile_phone": "+79127555555",
+      "position": "Главный инженер-технолог, начальник КТО",
+      "birthday": "1976-10-18",
+      "date_employment": "2025-10-18",
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        3
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T07:14:52.735Z",
+      "is_superuser": false,
+      "username": "ДиспетчерА.А.",
+      "first_name": "Анна",
+      "last_name": "Диспетчер",
+      "email": "disp@machexpert.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T06:00:29Z",
+      "patronymic": "Анатольевна",
+      "service_number": "5",
+      "internal_phone": "121",
+      "mobile_phone": "+79127565038",
+      "position": "Начальник ПДО",
+      "birthday": "2000-10-18",
+      "date_employment": "2025-10-18",
+      "date_dismissal": null,
+      "comment": "До этого работала В ООО ЗарСервис",
+      "groups": [
+        4
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T06:29:37.155Z",
+      "is_superuser": false,
+      "username": "МенеджерА.А.",
+      "first_name": "Александр",
+      "last_name": "Менеджер",
+      "email": "managerAA@mail.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T05:57:37Z",
+      "patronymic": "Александрович",
+      "service_number": "3",
+      "internal_phone": "200",
+      "mobile_phone": "+79127565040",
+      "position": "Менеджер по продажам",
+      "birthday": "1995-02-15",
+      "date_employment": "2025-10-18",
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-22T22:55:00.482Z",
+      "is_superuser": false,
+      "username": "СнабженецА.А.",
+      "first_name": "Артем",
+      "last_name": "Снабженец",
+      "email": "omts_mach@machexpert.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T06:03:49Z",
+      "patronymic": "Альбертович",
+      "service_number": "6",
+      "internal_phone": "150",
+      "mobile_phone": "+79127565050",
+      "position": "Начальник ОМТС",
+      "birthday": "1980-08-28",
+      "date_employment": "2025-10-18",
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        5
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-23T10:42:40.209Z",
+      "is_superuser": false,
+      "username": "КадровикА.А.",
+      "first_name": "Алевтина",
+      "last_name": "Кадровик",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-18T06:05:14Z",
+      "patronymic": "Антоновна",
+      "service_number": "7",
+      "internal_phone": "125",
+      "mobile_phone": "+79127565036",
+      "position": "Начальник ОК",
+      "birthday": "1990-10-05",
+      "date_employment": "2020-05-01",
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        6
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OgodKhomMtwuzSdadcjmU0$neHZHQ2cEzmrHPOd15Z2AfZEs+6FcP+z4LeN7jYaU4g=",
+      "last_login": "2025-10-22T13:43:29Z",
+      "is_superuser": false,
+      "username": "МенеджерБ.Б.",
+      "first_name": "Борис",
+      "last_name": "Менеджер",
+      "email": "manager_bb@zavod.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-21T15:28:13Z",
+      "patronymic": "Борисович",
+      "service_number": "8",
+      "internal_phone": "100",
+      "mobile_phone": "+79996666666",
+      "position": "Менеджер по продаже шнекового оборудования",
+      "birthday": null,
+      "date_employment": null,
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.employee",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$ir4yGePg63hVtL0Yw5YPtw$ixbTarzeCSr96rcOXz7oFRQHZMRSn9wKmn5zjZf6pts=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "МенеджерВ.В.",
+      "first_name": "Виталий",
+      "last_name": "Менеджер",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-23T09:10:12Z",
+      "patronymic": "",
+      "service_number": "9",
+      "internal_phone": null,
+      "mobile_phone": null,
+      "position": "Менеджер по продажам 2",
+      "birthday": null,
+      "date_employment": null,
+      "date_dismissal": null,
+      "comment": "",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  }
+]
